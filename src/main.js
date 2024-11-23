@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
+import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
 async function mount() {
