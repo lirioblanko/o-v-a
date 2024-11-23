@@ -6,7 +6,7 @@
   import Menubar from "primevue/menubar";
 
   const menuItems = [
-    {label: 'Продукты', item: 'Продукты', root: '/', active: true},
+    {label: 'Каталог', item: 'Каталог', root: '/', active: true},
     {label: 'Корзина', item: 'Корзина', root: '/cart', active: false},
   ];
 </script>
