@@ -16,9 +16,14 @@
       </ul>
     </template>
   </div>
-  <Modal v-model:visible="visible" :header="isInfo ? 'Добавление нового товара' : 'Оформление заказа'">
+  <Modal v-model:visible="visible" :header="isOrder ? 'Оформление заказа' : 'Добавление нового товара'">
     <template #form>
-      <ProductForm :resolver="resolver" :categories="categories" :initialValues="initialValues" @addProduct="addProduct" />
+      <template v-if="isOrder">
+        <OrderForm :resolver="resolverOrder" :initialValues="orderInitialValues" @addOrder="addOrder" />
+      </template>
+      <template v-else>
+        <ProductForm :resolver="resolverProduct" :categories="categories" :initialValues="productInitialValues" @addProduct="addProduct" />
+      </template>
     </template>
   </Modal>
 </template>
@@ -28,25 +33,43 @@
   import { apiService } from '../api/apiService.js';
   import { useToast } from 'primevue/usetoast';
   import Button from 'primevue/button';
-
   import Card from "../components/ProductCard.vue";
   import Modal from "../components/Modal.vue";
   import ProductForm from './utility/ProductForm.vue';
-
+  import OrderForm from './utility/OrderForm.vue';
   import { zodResolver } from '@primevue/forms/resolvers/zod';
   import { z } from 'zod';
-
+  import {toISOString} from "../helpers.js";
   const toast = useToast();
 
   const products = ref([]);
   const error = ref(false);
   const visible = ref(false);
   const isLoading = ref(true);
-  const isInfo = ref(false)
+  const isOrder = ref(false)
+  const cartId = ref(null);
 
   onMounted(() => {
     fetchProducts();
   });
+
+  async function fetchAnything(anything) {
+    try {
+      const response = await apiService.postAnything(anything);
+      console.log(`ответ: ${response.data}`)
+      toast.add({
+        severity: 'success',
+        summary: `Заказ успешно оформлен`,
+        life: 3000
+      });
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: `Ошибка при отправке: ${error}`,
+        life: 3000
+      });
+    }
+  }
 
   async function fetchProducts() {
     try {
@@ -70,12 +93,21 @@
     }
   }
 
-  const initialValues = reactive({
+  const productInitialValues = reactive({
     title: '',
     description: '',
     image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
     category: { name: ''},
   });
+
+  const orderInitialValues = reactive({
+    name: '',
+    address: '',
+    birthday: '',
+    phone: '',
+    agree: false,
+  });
+
 
   const categories = ref([
     { name: 'Мужская одежда', code: 'men' },
@@ -83,7 +115,7 @@
     { name: 'Детская одежда', code: 'children' },
   ]);
 
-  const resolver =  zodResolver(
+  const resolverProduct =  zodResolver(
       z.object({
         title: z.string().min(1, { message: 'Укажите название товара' }),
         image: z.string().min(1, { message: 'Укажите ссылку на изображение товара' }),
@@ -96,14 +128,42 @@
       })
   );
 
+  const resolverOrder =  zodResolver(
+      z.object({
+        name: z.string().min(1, { message: 'Укажите Ваше имя' }),
+        address: z.string().min(1, { message: 'Укажите Ваш адрес' }),
+        phone: z.string().min(1, { message: 'Укажите Ваш телефон в формате (999) 999-9999' }),
+        birthday: z.date({
+          format: 'dd.MM.yyyy',
+          message: 'Укажите Ваш день рождения в формате ДД.ММ.ГГГГ',
+        }),
+        agree: z.boolean().refine((val) => val, { message: 'Вы должны согласиться с условиями' }),
+      })
+  );
+
   function addToCart(id) {
-    isInfo.value = false
+    cartId.value = id;
+    isOrder.value = true
     visible.value = true;
   }
 
   function addNewProduct() {
-    isInfo.value = true
+    isOrder.value = false
     visible.value = true
+  }
+
+  function addOrder({ values }) {
+    const {name, address, birthday, phone} = values
+    const formatBirthday= toISOString(birthday)
+    const order = {
+      'id-product':cartId.value,
+      name,
+      address,
+      phone,
+      birthday: formatBirthday,
+    }
+    fetchAnything(order)
+    visible.value = false;
   }
 
   function addProduct({ values }) {
