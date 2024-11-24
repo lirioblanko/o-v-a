@@ -119,6 +119,7 @@
       z.object({
         title: z.string().min(1, { message: 'Укажите название товара' }),
         image: z.string().min(1, { message: 'Укажите ссылку на изображение товара' }),
+        description: z.string().optional(),
         category: z.union([
           z.object({
             name: z.string().min(1, 'Укажите категорию товара')
