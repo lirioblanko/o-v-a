@@ -2,7 +2,7 @@
   <header>
     <div class="container header">
       <slot name="search">
-        <search-item @search="search($event)"/>
+        <search-item />
       </slot>
       <span class="logo" >LOGO</span>
       <slot name="menu">
@@ -15,10 +15,6 @@
 <script setup>
   import SearchItem from "../components/SearchItem.vue";
   import Menu from "../components/Menu.vue";
-
-  function search(value) {
-    console.log(value)
-}
 </script>
 
 <style scoped>

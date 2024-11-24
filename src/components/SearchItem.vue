@@ -4,7 +4,7 @@
         <InputText
             placeholder="Поиск товара"
             v-model="searchText"
-            @keyup.enter="() => {$emit('search', searchText); searchText = ''}"
+            @keyup.enter="handleSearch"
         />
       </IconField>
 </template>
@@ -15,7 +15,13 @@
   import IconField from "primevue/iconfield";
   import InputText from "primevue/inputtext";
 
+  const emit = defineEmits(['search']);
   const searchText = ref('')
+
+  function handleSearch(text) {
+    emit('search-products', searchText)
+    searchText.value = ''
+  }
 </script>
 
 <style scoped>
