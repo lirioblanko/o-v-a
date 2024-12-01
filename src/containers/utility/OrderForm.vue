@@ -34,7 +34,7 @@
     </div>
     <p class="text-xs" style="margin: 0">* - обязательные поля</p>
     <div class="flex flex-column mt-2">
-      <Button type="submit" severity="secondary" label="Submit" />
+      <Button type="submit" label="Заказать" />
     </div>
   </Form>
 </template>

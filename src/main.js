@@ -1,10 +1,13 @@
 import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router';
+
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
+
 import './style.css'
-import App from './App.vue'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
@@ -22,6 +25,7 @@ async function mount() {
         }
     });
     app.use(ToastService);
+    app.use(router);
     app.mount('#app');
 }
 
