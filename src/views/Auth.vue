@@ -7,12 +7,13 @@
 
 <script setup>
   import AuthForm from "../containers/utility/AuthForm.vue";
-  import {defineProps, reactive} from "vue";
+  import {defineProps, inject, reactive} from "vue";
   import {zodResolver} from "@primevue/forms/resolvers/zod";
   import { z } from 'zod';
   import {useRouterLogic} from "../scripts/hooks/useRouter.js";
 
   const { goToNewProduct } = useRouterLogic()
+  const isLogin = inject('isLogin');
 
   defineProps({
     resolver: Object,
@@ -35,6 +36,7 @@
 
   function onAuth() {
     localStorage.setItem('isLogin', 'true');
+    isLogin.value = true;
     goToNewProduct()
   }
 </script>
