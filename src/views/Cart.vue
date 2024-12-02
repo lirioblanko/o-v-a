@@ -1,5 +1,6 @@
 <template>
   <h1>Оформление заказа</h1>
+  <Button label="Очистить корзину" class="w-20rem mb-6" @click="clear()" />
   <ul class="flex flex-column gap-3 w-full p-0">
     <li v-for="product in cartProducts" :key="product.id" class="flex">
       <Card style=" overflow: hidden; height: 100%" w-full>
@@ -27,12 +28,14 @@
   import { z } from 'zod';
   import OrderForm from "../containers/utility/OrderForm.vue";
   import {toISOString} from "../helpers.js";
+  import Button from "primevue/button";
   import Card from "primevue/card";
   import Image from 'primevue/image';
 
   const { toastInfo } = useToastLogic()
 
   const cartProducts = inject('cartProducts')
+  const count = inject('count')
 
   const orderInitialValues = reactive({
     name: '',
@@ -76,6 +79,11 @@
       birthday: formatBirthday,
     }
     fetchAnything(order)
+  }
+
+  function clear() {
+    cartProducts.value = [];
+    count.value = 0;
   }
 </script>
 
