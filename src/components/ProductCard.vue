@@ -11,26 +11,27 @@
     </template>
     <template #footer>
       <div class="flex gap-4" style="margin-top: auto">
-        <Button label="Подробнее" outlined class="w-full"  @click="() => onClick(product.id)"/>
-        <Button label="Купить" class="w-full"  @click="() => $emit('addToCart', product.id)"/>
+        <Button label="Подробнее" outlined class="w-full"  @click="goToProduct(product.id)"/>
+        <Button label="Купить" class="w-full"   @click="addToCart(product)"/>
       </div>
     </template>
   </Card>
 </template>
 
 <script setup>
-  import { apiService } from "../api/apiService.js";
   import Button from 'primevue/button';
   import Card from 'primevue/card';
   import Image from 'primevue/image';
   import Rating from 'primevue/rating';
+  import { useRouterLogic } from "../scripts/hooks/useRouter.js";
+  import {defineProps} from "vue";
 
-  defineProps(['product']);
+  const { goToProduct } = useRouterLogic();
 
-  const onClick = (id) => {
-    // todo: после настройки роутинга делать переход на страницу продукта и там выполнять этот запрос
-    apiService.getProductById(id)
-}
+  defineProps({
+    product: Object,
+    addToCart: Function,
+  });
 </script>
 
 <style >
