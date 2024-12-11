@@ -1,5 +1,5 @@
 <template>
-  <Form v-slot="$form" :initial-values="initialValues" :resolver="resolver" @submit="onSubmit" class="flex flex-column gap-2 w-full sm:w-56">
+  <Form v-slot="$form" :initial-values="initialValues" :resolver="resolver" @submit="onSubmit" class="flex flex-column gap-2 w-full sm:w-56" style="text-align: start">
     <div class="flex flex-column">
       <FloatLabel variant="in">
         <InputText type="text" name="title" fluid />
@@ -10,7 +10,7 @@
     <div class="flex flex-column">
       <FloatLabel variant="in">
         <InputText name="image" type="text" fluid />
-        <label for="title" class="text-xs">Изображение*</label>
+        <label for="image" class="text-xs">Изображение*</label>
       </FloatLabel>
       <Message v-if="$form.image?.invalid" severity="error" size="small" variant="simple">{{ $form.image.error?.message }}</Message>
     </div>
@@ -30,7 +30,7 @@
     </div>
     <p class="text-xs" style="margin: 0">* - обязательные поля</p>
     <div class="flex flex-column mt-2">
-      <Button type="submit" severity="secondary" label="Submit" />
+      <Button type="submit" label="Добавить" />
     </div>
   </Form>
 </template>

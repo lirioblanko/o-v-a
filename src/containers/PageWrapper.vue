@@ -12,12 +12,12 @@ import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 
 export default defineComponent({
-  components: {Footer, Header}
+  components: { Footer, Header }
 })
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-}
+  .container {
+    width: 100%;
+  }
 </style>
