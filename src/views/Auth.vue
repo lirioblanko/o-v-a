@@ -6,14 +6,17 @@
 </template>
 
 <script setup>
-  import AuthForm from "../containers/utility/AuthForm.vue";
-  import {defineProps, inject, reactive} from "vue";
-  import {zodResolver} from "@primevue/forms/resolvers/zod";
+  import { defineProps, reactive } from "vue";
+  import { storeToRefs } from "pinia";
+  import { useAuthStore } from "../store/auth.js";
+  import { useRouterLogic } from "../scripts/hooks/useRouter.js";
+  import { zodResolver } from "@primevue/forms/resolvers/zod";
   import { z } from 'zod';
-  import {useRouterLogic} from "../scripts/hooks/useRouter.js";
+  import AuthForm from "../containers/utility/AuthForm.vue";
 
   const { goToNewProduct } = useRouterLogic()
-  const isLogin = inject('isLogin');
+  let authStore = useAuthStore();
+  const { isLogin } = storeToRefs(authStore)
 
   defineProps({
     resolver: Object,

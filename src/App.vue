@@ -6,17 +6,6 @@
 
 <script setup>
   import PageWrapper from "./containers/PageWrapper.vue";
-  import {ref, provide} from "vue";
-
-  const count = ref(0)
-  const allProducts = ref([])
-  const cartProducts = ref([])
-  const isLogin = ref(localStorage.getItem('isLogin') === 'true')
-
-  provide ('count', count);
-  provide('allProducts', allProducts);
-  provide('cartProducts', cartProducts);
-  provide('isLogin', isLogin);
 </script>
 
 <style >

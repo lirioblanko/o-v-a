@@ -1,8 +1,9 @@
-import { inject } from "vue";
+import { storeToRefs } from "pinia";
+import { useCartStore } from "../../store/cart.js";
 
 export const useOrderLogic = (isVisibleModal) => {
-    const count = inject('count');
-    const cartProducts = inject('cartProducts');
+    let cartStore = useCartStore();
+    const { count, cartProducts } = storeToRefs(cartStore)
 
     function toggleModal(value) {
         isVisibleModal.value = value;
