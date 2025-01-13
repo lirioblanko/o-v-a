@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
@@ -13,6 +14,7 @@ import 'primeflex/primeflex.css'
 
 async function mount() {
     const app = createApp(App, {});
+    app.use(createPinia());
     app.component('Toast', Toast);
     app.use(PrimeVue,{
         theme: {

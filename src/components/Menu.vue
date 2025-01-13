@@ -14,14 +14,19 @@
 </template>
 
 <script setup>
-  import {ref, inject, computed } from "vue";
+  import { computed } from "vue";
+  import { storeToRefs } from "pinia";
+  import { useCartStore } from "../store/cart.js";
+  import { useAuthStore } from "../store/auth.js";
   import { useRouter } from "vue-router";
   import { useRouterLogic } from "../scripts/hooks/useRouter.js";
   const { goToNewProduct } = useRouterLogic();
   const router = useRouter();
 
-  const count = inject('count')
-  const isLogin = ref(inject('isLogin'));
+  let cartStore = useCartStore();
+  let authStore = useAuthStore();
+  const { count } = storeToRefs(cartStore)
+  const { isLogin } = storeToRefs(authStore)
 
   const menuItems = computed(() => {
     const items = [

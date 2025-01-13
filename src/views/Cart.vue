@@ -1,6 +1,6 @@
 <template>
   <h1>Оформление заказа</h1>
-  <Button label="Очистить корзину" class="w-20rem mb-6" @click="clear()" />
+  <Button label="Очистить корзину" class="w-20rem mb-6" @click="cartStore.clear()" />
   <ul class="flex flex-column gap-3 w-full p-0">
     <li v-for="product in cartProducts" :key="product.id" class="flex">
       <Card style=" overflow: hidden; height: 100%" w-full>
@@ -17,25 +17,22 @@
     </li>
   </ul>
   <Toast />
-  <OrderForm :resolver="resolverOrder" :initialValues="orderInitialValues" @addOrder="addOrder" />
+  <OrderForm :resolver="resolverOrder" :initialValues="orderInitialValues" @addOrder="cartStore.addOrder" />
 </template>
 
 <script setup>
-  import {inject, reactive} from "vue";
-  import {apiService} from "../api/apiService.js";
-  import { useToastLogic } from "../scripts/hooks/useToast.js";
+  import { reactive } from "vue";
+  import { storeToRefs } from "pinia";
+  import { useCartStore } from "../store/cart.js";
   import { zodResolver } from '@primevue/forms/resolvers/zod';
   import { z } from 'zod';
   import OrderForm from "../containers/utility/OrderForm.vue";
-  import {toISOString} from "../helpers.js";
   import Button from "primevue/button";
   import Card from "primevue/card";
   import Image from 'primevue/image';
 
-  const { toastInfo } = useToastLogic()
-
-  const cartProducts = inject('cartProducts')
-  const count = inject('count')
+  let cartStore = useCartStore();
+  const { cartProducts } = storeToRefs(cartStore)
 
   const orderInitialValues = reactive({
     name: '',
@@ -57,34 +54,6 @@
         agree: z.boolean().refine((val) => val, { message: 'Вы должны согласиться с условиями' }),
       })
   );
-
-  async function fetchAnything(anything) {
-    try {
-      const response = await apiService.postAnything(anything);
-      console.log(`ответ: ${response.data}`)
-      toastInfo(`Заказ успешно оформлен`, 'success' )
-    } catch (error) {
-      toastInfo(`Ошибка при отправке: ${error}`, 'error' )
-    }
-  }
-
-  function addOrder({ values }) {
-    const {name, address, birthday, phone} = values
-    const formatBirthday= toISOString(birthday)
-    const order = {
-      products: cartProducts.value,
-      name,
-      address,
-      phone,
-      birthday: formatBirthday,
-    }
-    fetchAnything(order)
-  }
-
-  function clear() {
-    cartProducts.value = [];
-    count.value = 0;
-  }
 </script>
 
 <style >

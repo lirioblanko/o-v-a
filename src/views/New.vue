@@ -1,21 +1,19 @@
 <template>
   <section>
     <h1>Добавление нового товара</h1>
-    <ProductForm :resolver="resolverProduct" :categories="categories" :initialValues="productInitialValues" @addProduct="addProduct" />
+    <ProductForm :resolver="resolverProduct" :categories="categories" :initialValues="productInitialValues" @addProduct="catalogStore.addProduct" />
   </section>
   <Toast />
 </template>
 
 <script setup>
-import {inject, reactive, ref} from "vue";
+import { reactive, ref} from "vue";
+import { useCatalogStore } from "../store/catalog.js";
 import ProductForm from "../containers/utility/ProductForm.vue";
-import { useToastLogic } from "../scripts/hooks/useToast.js";
-import { v4 as uuidv4 } from 'uuid';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { z } from "zod";
 
-const { toastInfo } = useToastLogic()
-const allProducts = inject('allProducts')
+let catalogStore = useCatalogStore();
 
 const productInitialValues = reactive({
   title: '',
@@ -43,22 +41,4 @@ const resolverProduct =  zodResolver(
       ])
     })
 );
-
-function addProduct({ values }) {
-  const {title, image, category, description} = values
-
-  allProducts.value.unshift(
-      {
-        id: uuidv4(),
-        image,
-        title,
-        description,
-        category: category.name,
-        rating: {
-          rate: 0,
-          count: 0
-        },
-      })
-  toastInfo(`Товар успешно добавлен`, 'success' )
-}
 </script>

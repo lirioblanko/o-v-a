@@ -17,37 +17,22 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, inject } from "vue";
-  import { apiService } from '../api/apiService.js';
-  import { useToastLogic } from "../scripts/hooks/useToast.js";
+  import { ref, onMounted } from "vue";
+  import { storeToRefs } from "pinia";
+  import { useCatalogStore } from "../store/catalog.js";
   import Card from "../components/ProductCard.vue";
   import ModalInfo from "./utility/ModalInfo.vue";
-  import {useOrderLogic} from "../scripts/hooks/useOrderLogic.js";
-
-  const { toastInfo } = useToastLogic()
+  import { useOrderLogic } from "../scripts/hooks/useOrderLogic.js";
 
   const visible = ref(false);
-  const isLoading = ref(true);
-
-  const allProducts = inject('allProducts')
+  let catalogStore = useCatalogStore();
+  const { allProducts, isLoading } = storeToRefs(catalogStore)
 
   onMounted(() => {
-    fetchProducts();
+    catalogStore.fetchProducts();
   });
 
   const { addToCart, toggleModal } = useOrderLogic(visible)
-
-  async function fetchProducts() {
-    try {
-      const data = await apiService.getProducts();
-      if (data) {
-        allProducts.value = [...allProducts.value, ...data];
-      }
-    } catch (error) {
-      toastInfo(`Ошибка при получении товаров: ${error}`, 'error' )
-    }
-    isLoading.value = false;
-  }
 </script>
 
 <style scoped>
