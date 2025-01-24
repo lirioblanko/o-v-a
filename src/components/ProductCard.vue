@@ -11,8 +11,8 @@
     </template>
     <template #footer>
       <div class="flex gap-4" style="margin-top: auto">
-        <Button label="Подробнее" outlined class="w-full"  @click="goToProduct(product.id)"/>
-        <Button label="Купить" class="w-full"   @click="addToCart(product)"/>
+        <Button :data-test="`btn-product-${product.id}`" label="Подробнее" outlined class="w-full" @click="goToProduct(product.id)" />
+        <Button :data-test="`btn-buy-${product.id}`" label="Купить" class="w-full" @click="addToCart(product)" />
       </div>
     </template>
   </Card>
@@ -23,14 +23,12 @@
   import Card from 'primevue/card';
   import Image from 'primevue/image';
   import Rating from 'primevue/rating';
-  import { useRouterLogic } from "../scripts/hooks/useRouter.js";
   import {defineProps} from "vue";
-
-  const { goToProduct } = useRouterLogic();
 
   defineProps({
     product: Object,
     addToCart: Function,
+    goToProduct: Function,
   });
 </script>
 
