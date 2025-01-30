@@ -7,13 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "e2e2": "npx playwright codegen localhost:5173",
+    "e2e": "playwright test"
   },
   "dependencies": {
+    "@playwright/test": "^1.50.0",
     "@primevue/forms": "^4.2.2",
     "@primevue/themes": "^4.2.2",
     "date-fns": "^4.1.0",
     "pinia": "^2.3.0",
+    "playwright-chromium": "^1.50.0",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.2",
