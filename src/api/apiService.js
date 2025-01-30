@@ -1,5 +1,5 @@
-const API_URL = 'http://fakestoreapi.com';
-const EHO_SERVER='https://httpbin.org/';
+export const API_URL = 'http://fakestoreapi.com';
+export const EHO_SERVER='https://httpbin.org/';
 
 export const apiService = {
     async getProducts() {
@@ -22,6 +22,11 @@ export const apiService = {
             },
             body: JSON.stringify(anything)
         });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message}`);
+        }
 
         return await response.json();
     }
