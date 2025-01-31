@@ -8,7 +8,7 @@
     <template v-if="!allProducts.isEmpty">
       <ul class="grid gap-3">
         <li v-for="product in allProducts" :key="product.id" class="flex" >
-          <card :product="product" :addToCart="addToCart"/>
+          <card :product="product" :addToCart="addToCart" :goToProduct="goToProduct" />
         </li>
       </ul>
     </template>
@@ -23,6 +23,7 @@
   import Card from "../components/ProductCard.vue";
   import ModalInfo from "./utility/ModalInfo.vue";
   import { useOrderLogic } from "../scripts/hooks/useOrderLogic.js";
+  import { useRouterLogic } from "../scripts/hooks/useRouter.js";
 
   const visible = ref(false);
   let catalogStore = useCatalogStore();
@@ -33,6 +34,7 @@
   });
 
   const { addToCart, toggleModal } = useOrderLogic(visible)
+  const { goToProduct } = useRouterLogic()
 </script>
 
 <style scoped>

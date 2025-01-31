@@ -1,7 +1,7 @@
 <template>
-  <div >
+  <div>
     <ul class="flex nav">
-      <li v-for="item in menuItems" :key="item.label" class="nav-item" >
+      <li :data-test="`menu-link-${char}`" v-for="item in menuItems" :key="item.label" class="nav-item" >
         <router-link
             :to="item.to"
             @click.native.prevent="handleClick(item)"
@@ -14,12 +14,14 @@
 </template>
 
 <script setup>
-  import { computed } from "vue";
+  import { defineProps, computed } from "vue";
   import { storeToRefs } from "pinia";
   import { useCartStore } from "../store/cart.js";
   import { useAuthStore } from "../store/auth.js";
   import { useRouter } from "vue-router";
   import { useRouterLogic } from "../scripts/hooks/useRouter.js";
+
+  defineProps(['char']);
   const { goToNewProduct } = useRouterLogic();
   const router = useRouter();
 

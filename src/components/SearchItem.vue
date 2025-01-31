@@ -15,11 +15,11 @@
   import IconField from "primevue/iconfield";
   import InputText from "primevue/inputtext";
 
-  const emit = defineEmits(['search']);
-  const searchText = ref('')
+  const emit = defineEmits(['search-products']);
+  const searchText = ref('test')
 
   function handleSearch(text) {
-    emit('search-products', searchText)
+    emit('search-products', searchText.value)
     searchText.value = ''
   }
 </script>
